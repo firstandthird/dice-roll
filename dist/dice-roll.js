@@ -1,6 +1,6 @@
 /*!
   * Dice Roll - A javascript A/B library 
-  * v0.0.1
+  * v0.0.2
   * https://github.com/jgallen23/dice-roll
   * copyright JGA 2011
   * MIT License
@@ -21,9 +21,9 @@ var DiceRoll = function(name, percentage, expires, callback) {
     var max = 1000; 
     var pct = percentage / 100;
     var rnd = Math.floor(Math.random()*max+1);
-    var opt = ((max*pct)>rnd)?1:0;
+    var opt = ((max*pct)>=rnd)?1:0;
     if (monster)
-      monster.set(key, opt, 30);
+      monster.set(key, opt, expires);
     callback(opt);
   } else {
     callback(cookie);
