@@ -1,0 +1,16 @@
+{
+  "name": "dice-roll",
+  "description": "A basic A/B test library",
+  "version": "0.0.1",
+  "homepage": "https://github.com/jgallen23/dice-roll",
+  "authors": ["Greg Allen, @jgaui"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jgallen23/dice-roll.git"
+  },
+  "dependencies": {
+    "cookie-monster": "*"
+  },
+  "main": "./dist/dice-roll.js",
+  "keywords": ["ender", "testing", "ab"]
+}
