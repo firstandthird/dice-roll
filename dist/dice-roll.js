@@ -13,7 +13,8 @@
 }('diceRoll', function() {
 
 var max = 1000;
-var monster = (typeof ender !== "undefined")?require("cookie-monster"):monster;
+//monster should be loaded only in browser.
+var monster = (typeof module !== 'undefined')?false:(typeof ender !== "undefined")?require("cookie-monster"):window.monster;
 
 var DiceRoll = function(name, expires) {
   this.expires = expires || 7;
@@ -51,7 +52,7 @@ DiceRoll.prototype.run = function() {
         if (monster) {
           monster.set(this.key, val, this.expires);
         }
-        test.callback(test.percentage);
+        test.callback(test.percentage, i);
         opt = true;
       } else {
         opt = false;
@@ -60,7 +61,7 @@ DiceRoll.prototype.run = function() {
       start += pct + 1;
     } else if (val == this.cookieValue) {
       opt = true;
-      test.callback(this.cookieValue);
+      test.callback(test.percentage, i);
     }
 
     if (opt) return;
@@ -68,7 +69,7 @@ DiceRoll.prototype.run = function() {
 
   //not tossed in a pool
   if (this.elseCallback) 
-    this.elseCallback();
+    this.elseCallback(false, i);
 };
 
 var diceRoll = function(name, expires) {

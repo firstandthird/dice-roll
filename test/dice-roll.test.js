@@ -8,6 +8,13 @@ if (typeof require !== "undefined") { //nodejs
 
 describe('diceRoll', function() {
 
+  afterEach(function(done) {
+    if (typeof monster !== "undefined") {
+      monster.remove('diceroll-name');
+    }
+    done();
+  });
+
   describe('#init', function() {
     it('should take name and expires', function() {
       var dr = diceRoll('name', 10);
@@ -43,7 +50,9 @@ describe('diceRoll', function() {
   
    it('should call test if 100%', function(done) {
      diceRoll('name')
-      .test(100, function() {
+      .test(100, function(perc, testNum) {
+        perc.should.equal(100);
+        testNum.should.equal(0);
         done();
       })
       .run();
@@ -59,6 +68,7 @@ describe('diceRoll', function() {
       })
       .run();
    });
+
    it ('should work if no tests are defined', function(done) {
      diceRoll('name')
       .else(function() {
@@ -70,104 +80,38 @@ describe('diceRoll', function() {
      diceRoll('name')
       .test(0, function() {
       })
-      .else(function() {
+      .else(function(perc, testNum) {
+        perc.should.equal(false);
+        testNum.should.equal(1);
         done();
       })
       .run();
    });
+
+   if (typeof monster !== "undefined") {
+     describe('cookies enabled', function() {
+       it('should remember last result', function(done) {
+         var firstRun = -1;
+
+         var f = function(perc, testNum) {
+           if (firstRun == -1) {
+             firstRun = testNum;
+             run(); //run again
+           } else {
+             testNum.should.equal(firstRun);
+             done();
+           }
+         };
+         var run = function() {
+           diceRoll('name')
+            .test(40, f) 
+            .test(40, f)
+            .else(f)
+            .run();
+         }
+         run();
+       });
+     });
+   }
   });
-
-  //tests for cookies
 });
-
-/*
-if (typeof ender !== "undefined") {
-  DiceRoll = require("dice-roll"); 
-}
-var testName = 'test1';
-
-module('Dice Roll', { 
-  teardown: function() {
-    var monster = window.monster;
-    if (typeof ender !== "undefined") {
-      monster = require('cookie-monster');
-    }
-    if (typeof monster !== 'undefined') {
-      monster.remove('diceroll-test1');
-      monster.remove('diceroll-test2');
-    }
-  }
-});
-
-test('monster', function() {
-  ok((typeof monster !== 'undefined' || (typeof ender !== "undefined" && require('cookie-monster'))), 'monster needs to exist for repeat roll to work');
-});
-
-test('roll 0%', function() {
-  expect(1);
-  var roll = new DiceRoll(testName, 7);
-  roll.test(0, function(percent){
-    ok(0);
-  }).else(function(){
-    ok(1);
-  }).run();
-});
-test('roll 100%', function() {
-  expect(1);
-  var roll = new DiceRoll(testName, 7);
-  roll.test(100, function(percent){
-    ok(1);
-  }).else(function(){
-    ok(0);
-  }).run();
-});
-
-test('repeat roll', function() {
-  expect(1);
-
-  var roll = new DiceRoll(testName, 7);
-  roll.test(100, function(percent){
-    var roll2 = new DiceRoll(testName, 7);
-    roll2.test(100, function(p){
-      ok(1);
-    }).test(50, function(p){
-      ok(0);
-    }).test(100, function(p){
-      ok(0);
-    }).else(function(){
-      ok(0);
-    }).run();
-  }).test(50, function(p){
-    ok(0);
-  }).test(100, function(p){
-    ok(0);
-  }).else(function(){
-    ok(0);
-  }).run();
-
-});
-test('multiple tests', function() {
-  expect(1);
-
-  var roll = new DiceRoll(testName, 7);
-  roll.test(0, function(p){
-    ok(0);
-  }).test(50, function(p){
-    ok(1);
-  }).test(50, function(p){
-    ok(1);
-  }).else(function(){
-    ok(0);
-  }).run();
-});
-
-test('roll 50%', function() {
-  expect(1);
-  var roll = new DiceRoll(testName, 7);
-  roll.test(50, function(p){
-    ok(1);
-  }).else(function(){
-    ok(1);
-  }).run();
-});
-*/
