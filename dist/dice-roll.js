@@ -33,7 +33,7 @@ DiceRoll.prototype.test = function(percentage, callback) {
 };
 
 DiceRoll.prototype.else = function(callback) {
-  this.else = callback;
+  this.elseCb = callback;
   return this;
 };
 
@@ -50,7 +50,7 @@ DiceRoll.prototype.run = function() {
 
       if(rnd >= start && rnd <= (start+pct)) {
         if (this.monster) {
-          this.monster.set(this.key, test.percentage+'', this.expires);
+          this.monster.set(this.key, test.percentage+':'+i, this.expires);
         }
         test.callback(test.percentage);
         opt = true;
@@ -59,7 +59,7 @@ DiceRoll.prototype.run = function() {
       }
 
       start += pct+1;
-    } else if(test.percentage == this.cookie) {
+    } else if(test.percentage+':'+i == this.cookie) {
       opt = true;
       test.callback(this.cookie);
     }
@@ -68,7 +68,7 @@ DiceRoll.prototype.run = function() {
   }
 
   //not tossed in a pool
-  if(this.else) this.else();
+  if(this.elseCb) this.elseCb();
 };
   return DiceRoll;
 });

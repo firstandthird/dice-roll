@@ -44,15 +44,19 @@ test('repeat roll', function() {
   var roll = new DiceRoll(testName, 7);
   roll.test(100, function(percent){
     var roll2 = new DiceRoll(testName, 7);
-    roll2.test(0, function(p){
-      ok(0);
+    roll2.test(100, function(p){
+      ok(1);
     }).test(50, function(p){
       ok(0);
     }).test(100, function(p){
-      ok(1);
+      ok(0);
     }).else(function(){
       ok(0);
     }).run();
+  }).test(50, function(p){
+    ok(0);
+  }).test(100, function(p){
+    ok(0);
   }).else(function(){
     ok(0);
   }).run();
