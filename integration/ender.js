@@ -26,6 +26,7 @@
     , old = context.$
 
   function require (identifier) {
+    // modules can be required from ender's build system, or found on the window
     var module = modules[identifier] || window[identifier]
     if (!module) throw new Error("Requested module '" + identifier + "' has not been defined.")
     return module
@@ -38,9 +39,6 @@
   context['provide'] = provide
   context['require'] = require
 
-  // Implements Ender's $ global access object
-  // =========================================
-
   function aug(o, o2) {
     for (var k in o2) k != 'noConflict' && k != '_VERSION' && (o[k] = o2[k])
     return o
@@ -48,7 +46,7 @@
 
   function boosh(s, r, els) {
     // string || node || nodelist || window
-    if (ender._select && (typeof s == 'string' || s.nodeName || s.length && 'item' in s || s == window)) {
+    if (typeof s == 'string' || s.nodeName || (s.length && 'item' in s) || s == window) {
       els = ender._select(s, r)
       els.selector = s
     } else els = isFinite(s.length) ? s : [s]
@@ -60,7 +58,7 @@
   }
 
   aug(ender, {
-      _VERSION: '0.3.4'
+      _VERSION: '0.3.6'
     , fn: boosh // for easy compat to jQuery plugins
     , ender: function (o, chain) {
         aug(chain ? boosh : ender, o)
@@ -98,7 +96,7 @@
 
   /*!
     * Cookie Monster - A javascript cookie library 
-    * v0.0.1
+    * v0.0.2
     * https://github.com/jgallen23/cookie-monster
     * copyright JGA 2011
     * MIT License
@@ -114,21 +112,42 @@
     return {
       set: function(name, value, days, path) {
         var date = new Date(),
-            expires = '';
+            expires = '',
+            type = typeof(value),
+            valueToUse = '';
         path = path || "/";
         if (days) {
           date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
           expires = "; expires=" + date.toGMTString();
         }
-        document.cookie = name + "=" + value + expires + "; path=" + path;
+        if(type !== "string"  && type !== "undefined"){
+            if(!("JSON" in window)) throw "Bummer, your browser doesn't support JSON parsing.";
+            valueToUse = JSON.stringify({v:value});
+        }
+        else
+          valueToUse = escape(value);
+        
+        document.cookie = name + "=" + valueToUse + expires + "; path=" + path;
       },
       get: function(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split(';');
+        var nameEQ = name + "=",
+            ca = document.cookie.split(';'),
+            value = '',
+            firstChar = '',
+            parsed={};
         for (var i = 0; i < ca.length; i++) {
           var c = ca[i];
           while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-          if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+          if (c.indexOf(nameEQ) === 0) {
+            value = c.substring(nameEQ.length, c.length);
+            firstChar = value.substring(0, 1);
+            if(firstChar=="{"){
+              parsed = JSON.parse(value);
+              if("v" in parsed) return parsed.v;
+            }
+            if(value=="undefined") return undefined;
+            return unescape(value);
+          }
         }
         return null;
       },
@@ -166,24 +185,50 @@
     else this[name] = definition();
   }('DiceRoll', function() {
   
-  var DiceRoll = function(name, percentage, expires, callback) {
-    expires = expires || 7;
-    var key = "diceroll-"+name;
-    var monster = (typeof ender !== "undefined")?require("cookie-monster"):window.monster;
-    var cookie = (monster)?monster.get(key):false;
-    if (!cookie) {
-      var max = 1000; 
-      var pct = percentage / 100;
-      var rnd = Math.floor(Math.random()*max+1);
-      var opt = ((max*pct)>=rnd)?1:0;
-      if (monster)
-        monster.set(key, opt, expires);
-      callback(opt);
-    } else {
-      callback(cookie);
-    }
+  var DiceRoll = function(name, expires) {
+    this.expires = expires || 7;
+    this.max = 1000;
+    this.key = "diceroll-"+name;
+    this.monster = (typeof ender !== "undefined")?require("cookie-monster"):window.monster;
+    this.cookie = (monster)?monster.get(key):false;
+    this.tests = [];
+  
+    console.log(this);
+  
+    return this;
   };
   
+  DiceRoll.prototype.test = function(percentage, callback) {
+    this.tests.push({
+      percentage: percentage,
+      callback: callback
+    });
+  
+    return this;
+  };
+  
+  DiceRoll.prototype.run = function() {
+    var rnd = ~~(Math.random()*this.max+1);
+  
+    console.log(rnd);
+    var pct;
+    for(var i = 0, c = this.tests.length; i<c; i++) {
+      var test = this.tests[i];
+      
+      
+       
+      // if (!this.cookie) {
+      //   pct = test.percentage / 100;
+      //   rnd = Math.floor(Math.random()*max+1);
+      //   opt = ((max*pct)>=rnd)?1:0;
+      //   if (this.monster)
+      //     monster.set(this.key, opt, this.expires);
+      //   callback(opt);
+      // } else {
+      //   callback(this.cookie);
+      // }
+    }
+  };
     return DiceRoll;
   });
   
