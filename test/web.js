@@ -22,37 +22,63 @@ test('monster', function() {
 
 test('roll 0%', function() {
   expect(1);
-  new DiceRoll(testName, 0, 7, function(opt) {
-    equal(opt, 0); 
-  });
+  var roll = new DiceRoll(testName, 7);
+  roll.test(0, function(percent){
+    ok(0);
+  }).else(function(){
+    ok(1);
+  }).run();
 });
 test('roll 100%', function() {
   expect(1);
-  new DiceRoll(testName, 100, 7, function(opt) {
-    equal(opt, 1); 
-  });
+  var roll = new DiceRoll(testName, 7);
+  roll.test(100, function(percent){
+    ok(1);
+  }).else(function(){
+    ok(0);
+  }).run();
 });
 test('repeat roll', function() {
   expect(1);
-  new DiceRoll(testName, 100, 7, function(opt) {
-    var val = opt;
-    new DiceRoll(testName, 0, 7, function(opt) {
-      equal(opt, val);
-    });
-  });
+
+  var roll = new DiceRoll(testName, 7);
+  roll.test(100, function(percent){
+    var roll2 = new DiceRoll(testName, 7);
+    roll2.test(0, function(p){
+      ok(0);
+    }).test(50, function(p){
+      ok(0);
+    }).test(100, function(p){
+      ok(1);
+    }).else(function(){
+      ok(0);
+    }).run();
+  }).else(function(){
+    ok(0);
+  }).run();
+
 });
 test('multiple tests', function() {
-  new DiceRoll(testName, 100, 7, function(opt) {
-    var val = opt;
-    new DiceRoll('test2', 0, 7, function(opt) {
-      notEqual(opt, val);
-    });
-  });
+  expect(1);
+
+  var roll = new DiceRoll(testName, 7);
+  roll.test(0, function(p){
+    ok(0);
+  }).test(50, function(p){
+    ok(1);
+  }).test(50, function(p){
+    ok(1);
+  }).else(function(){
+    ok(0);
+  }).run();
 });
 
 test('roll 50%', function() {
   expect(1);
-  new DiceRoll(testName, 50, 7, function(opt) {
-    ok((opt == 1 || opt === 0));
-  });
+  var roll = new DiceRoll(testName, 7);
+  roll.test(50, function(p){
+    ok(1);
+  }).else(function(){
+    ok(1);
+  }).run();
 });
