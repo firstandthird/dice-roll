@@ -38,6 +38,7 @@ test('roll 100%', function() {
     ok(0);
   }).run();
 });
+
 test('repeat roll', function() {
   expect(1);
 

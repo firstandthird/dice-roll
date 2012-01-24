@@ -173,7 +173,7 @@
 
   /*!
     * Dice Roll - A javascript A/B library 
-    * v0.0.2
+    * v0.0.3
     * https://github.com/jgallen23/dice-roll
     * copyright JGA 2011
     * MIT License
@@ -185,17 +185,15 @@
     else this[name] = definition();
   }('DiceRoll', function() {
   
+  var max = 1000;
+  var monster = (typeof ender !== "undefined")?require("cookie-monster"):window.monster;
+  
   var DiceRoll = function(name, expires) {
     this.expires = expires || 7;
-    this.max = 1000;
     this.key = "diceroll-"+name;
-    this.monster = (typeof ender !== "undefined")?require("cookie-monster"):window.monster;
-    this.cookie = (monster)?monster.get(key):false;
+    this.cookieValue = (monster)?monster.get(this.key):false;
     this.tests = [];
   
-    console.log(this);
-  
-    return this;
   };
   
   DiceRoll.prototype.test = function(percentage, callback) {
@@ -207,28 +205,50 @@
     return this;
   };
   
-  DiceRoll.prototype.run = function() {
-    var rnd = ~~(Math.random()*this.max+1);
-  
-    console.log(rnd);
-    var pct;
-    for(var i = 0, c = this.tests.length; i<c; i++) {
-      var test = this.tests[i];
-      
-      
-       
-      // if (!this.cookie) {
-      //   pct = test.percentage / 100;
-      //   rnd = Math.floor(Math.random()*max+1);
-      //   opt = ((max*pct)>=rnd)?1:0;
-      //   if (this.monster)
-      //     monster.set(this.key, opt, this.expires);
-      //   callback(opt);
-      // } else {
-      //   callback(this.cookie);
-      // }
-    }
+  DiceRoll.prototype.else = function(callback) {
+    this.elseCb = callback;
+    return this;
   };
+  
+  DiceRoll.prototype.run = function() {
+    var rnd = Math.floor(Math.random() * max + 1);
+    var start = 0;
+    var pct, test, cookie, opt, val;
+  
+    for(var i = 0, c = this.tests.length; i<c; i++) {
+      test = this.tests[i];
+      val = test.percentage + ':' + i;
+      
+      if(!this.cookieValue) {
+        pct = (test.percentage / 100) * max;
+  
+        if(rnd >= start && rnd <= (start+pct)) {
+          if (monster) {
+            monster.set(this.key, val, this.expires);
+          }
+          test.callback(test.percentage);
+          opt = true;
+        } else {
+          opt = false;
+        }
+  
+        start += pct+1;
+      } else if(val == this.cookieValue) {
+        opt = true;
+        test.callback(this.cookieValue);
+      }
+  
+      if(opt) return;
+    }
+  
+    //not tossed in a pool
+    if(this.elseCb) this.elseCb();
+  };
+  
+  var diceRoll = function() {
+    return new DiceRoll.apply(this, arguments);
+  };
+  
     return DiceRoll;
   });
   

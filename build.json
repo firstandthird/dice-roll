@@ -6,6 +6,13 @@
       "./lib/amd-top.js",
       "./lib/dice-roll.js",
       "./lib/amd-bottom.js"
+    ],
+    "dice-roll.full": [
+      "./lib/copyright.js",
+      "./lib/amd-top.js",
+      "./node_modules/cookie-monster/dist/monster.js",
+      "./lib/dice-roll.js",
+      "./lib/amd-bottom.js"
     ]
   },
   "JSHINT_OPTS": {
@@ -18,9 +25,9 @@
     "regexp": false,
     "undef": false,
     "sub": true,
-    "white": true,
+    "white": false,
     "indent": 2,
-    "whitespace": true,
+    "whitespace": false,
     "asi": true
   }
 }
