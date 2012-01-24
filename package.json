@@ -11,6 +11,10 @@
   "dependencies": {
     "cookie-monster": "*"
   },
+  "devDependencies": {
+    "mocha": "*",
+    "chai": "*"
+  },
   "main": "./dist/dice-roll.js",
   "keywords": ["ender", "testing", "ab"]
 }

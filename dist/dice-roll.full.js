@@ -10,7 +10,7 @@
   if (typeof module != 'undefined' && module.exports) module.exports = definition();
   else if (typeof define == 'function' && typeof define.amd == 'object') define(definition);
   else this[name] = definition();
-}('dice-roll', function() {
+}('diceRoll', function() {
 
 /*!
   * Cookie Monster - A javascript cookie library 
@@ -79,14 +79,13 @@ var monster = function() {
 });
 
 var max = 1000;
-var monster = (typeof ender !== "undefined")?require("cookie-monster"):window.monster;
+var monster = (typeof ender !== "undefined")?require("cookie-monster"):monster;
 
 var DiceRoll = function(name, expires) {
   this.expires = expires || 7;
   this.key = "diceroll-"+name;
   this.cookieValue = (monster)?monster.get(this.key):false;
   this.tests = [];
-
 };
 
 DiceRoll.prototype.test = function(percentage, callback) {
@@ -94,12 +93,11 @@ DiceRoll.prototype.test = function(percentage, callback) {
     percentage: percentage,
     callback: callback
   });
-
   return this;
 };
 
 DiceRoll.prototype.else = function(callback) {
-  this.elseCb = callback;
+  this.elseCallback = callback;
   return this;
 };
 
@@ -126,7 +124,7 @@ DiceRoll.prototype.run = function() {
       }
 
       start += pct + 1;
-    } else if(val == this.cookieValue) {
+    } else if (val == this.cookieValue) {
       opt = true;
       test.callback(this.cookieValue);
     }
@@ -135,8 +133,8 @@ DiceRoll.prototype.run = function() {
   }
 
   //not tossed in a pool
-  if (this.elseCb) 
-    this.elseCb();
+  if (this.elseCallback) 
+    this.elseCallback();
 };
 
 var diceRoll = function(name, expires) {
