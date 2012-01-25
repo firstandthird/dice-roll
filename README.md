@@ -21,7 +21,7 @@ or
 	diceRoll('testName', expiration)
 		.test(percentage, callback);
 		.test(percentage2, callback2);
-		.otherwise();
+		.otherwise(callback3);
 		.run();
 
 ## Example
