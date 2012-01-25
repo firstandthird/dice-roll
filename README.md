@@ -12,10 +12,6 @@ A simple a/b test library for javascript
 download [dice-roll.js](https://github.com/jgallen23/dice-roll/blob/master/dist/dice-roll.js) from dist directory.
 (If you want the test to be persistance across visits, download [cookie-monster](https://github.com/jgallen23/cookie-monster) as well)
 
-or
-
-	ender build dice-roll
-
 ## Usage
 
 	diceRoll('testName', expiration)
