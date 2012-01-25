@@ -1,5 +1,5 @@
 var should, diceRoll;
-if (typeof require !== "undefined") { //nodejs
+if (typeof module !== "undefined") { //nodejs
   should = require('chai').should();
   diceRoll = require('../dist/dice-roll');
 } else { //browser
@@ -18,8 +18,8 @@ describe('diceRoll', function() {
   describe('#init', function() {
     it('should take name and expires', function() {
       var dr = diceRoll('name', 10);
-      console.log(dr.key);
       dr.key.should.equal('diceroll-name');
+      console.log(dr.expires);
       dr.expires.should.equal(10);
     });
     it('should default to 7 day expires', function() {
@@ -38,10 +38,10 @@ describe('diceRoll', function() {
     });
   });
 
-  describe('#else', function() {
+  describe('#otherwise', function() {
     it('should set the elseCallback', function() {
       var f = function() {};
-      var dr = diceRoll('name').else(f);
+      var dr = diceRoll('name').otherwise(f);
       dr.elseCallback.should.equal(f);
     });
   });
@@ -71,16 +71,16 @@ describe('diceRoll', function() {
 
    it ('should work if no tests are defined', function(done) {
      diceRoll('name')
-      .else(function() {
+      .otherwise(function() {
         done();
       })
       .run();
    });
-   it('should call else if no test passes', function(done) {
+   it('should call otherwise if no test passes', function(done) {
      diceRoll('name')
       .test(0, function() {
       })
-      .else(function(perc, testNum) {
+      .otherwise(function(perc, testNum) {
         perc.should.equal(false);
         testNum.should.equal(1);
         done();
@@ -106,7 +106,7 @@ describe('diceRoll', function() {
            diceRoll('name')
             .test(40, f) 
             .test(40, f)
-            .else(f)
+            .otherwise(f)
             .run();
          }
          run();

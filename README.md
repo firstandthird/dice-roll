@@ -21,7 +21,7 @@ or
 	diceRoll('testName', expiration)
 		.test(percentage, callback);
 		.test(percentage2, callback2);
-		.else(callback);
+		.otherwise();
 		.run();
 
 ## Example
@@ -33,7 +33,7 @@ or
 		.test(20, function() {
 			//20% of the time user will be in this test 
 		});
-		.else(function() {
+		.otherwise(function() {
 			//called if not in either other test (70% of the time)
 		});
 		.run();

@@ -97,7 +97,7 @@ DiceRoll.prototype.test = function(percentage, callback) {
   return this;
 };
 
-DiceRoll.prototype.else = function(callback) {
+DiceRoll.prototype.otherwise = function(callback) {
   this.elseCallback = callback;
   return this;
 };
