@@ -14,7 +14,7 @@ download [dice-roll.js](https://github.com/jgallen23/dice-roll/blob/master/dist/
 
 ## Usage
 
-	diceRoll('testName', expiration)
+	diceRoll('testName', expiration) //jquery style chaining
 		.test(percentage, callback);
 		.test(percentage2, callback2);
 		.otherwise(callback3);
