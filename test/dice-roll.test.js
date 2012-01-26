@@ -19,7 +19,6 @@ describe('diceRoll', function() {
     it('should take name and expires', function() {
       var dr = diceRoll('name', 10);
       dr.key.should.equal('diceroll-name');
-      console.log(dr.expires);
       dr.expires.should.equal(10);
     });
     it('should default to 7 day expires', function() {
@@ -104,11 +103,17 @@ describe('diceRoll', function() {
          };
          var run = function() {
            diceRoll('name')
-            .test(40, f) 
-            .test(40, f)
+            .test(10, f) 
+            .test(10, f)
+            .test(10, f)
+            .test(10, f)
+            .test(10, f)
+            .test(10, f)
+            .test(10, f)
+            .test(10, f)
             .otherwise(f)
             .run();
-         }
+         };
          run();
        });
      });

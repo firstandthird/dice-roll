@@ -1,6 +1,6 @@
 /*!
   * Dice Roll - A javascript A/B library 
-  * v0.0.3
+  * v0.0.4
   * https://github.com/jgallen23/dice-roll
   * copyright JGA 2011
   * MIT License
@@ -43,14 +43,13 @@ DiceRoll.prototype.run = function() {
 
   for (var i = 0, c = this.tests.length; i<c; i++) {
     test = this.tests[i];
-    val = test.percentage + ':' + i;
     
     if(!this.cookieValue) {
       pct = (test.percentage / 100) * max;
 
       if(rnd >= start && rnd <= (start+pct)) {
         if (monster) {
-          monster.set(this.key, val, this.expires);
+          monster.set(this.key, i.toString(), this.expires);
         }
         test.callback(test.percentage, i);
         opt = true;
@@ -59,7 +58,7 @@ DiceRoll.prototype.run = function() {
       }
 
       start += pct + 1;
-    } else if (val == this.cookieValue) {
+    } else if (i.toString() == this.cookieValue) {
       opt = true;
       test.callback(test.percentage, i);
     }
@@ -68,8 +67,12 @@ DiceRoll.prototype.run = function() {
   }
 
   //not tossed in a pool
-  if (this.elseCallback) 
+  if (this.elseCallback)  {
+    if (monster) {
+      monster.set(this.key, i.toString(), this.expires);
+    }
     this.elseCallback(false, i);
+  }
 };
 
 var diceRoll = function(name, expires) {
