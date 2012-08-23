@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/jgallen23/dice-roll.png)](http://travis-ci.org/jgallen23/dice-roll)
 #Dice Roll
 A simple a/b test library for javascript
 
