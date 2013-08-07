@@ -1,6 +1,6 @@
 /*!
  * dice-roll - A basic A/B test library
- * v0.0.4
+ * v0.1.0
  * https://github.com/jgallen23/dice-roll
  * copyright Greg Allen 2013
  * MIT License

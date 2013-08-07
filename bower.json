@@ -1,7 +1,7 @@
 {
   "name": "dice-roll",
   "description": "A basic A/B test library",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "homepage": "https://github.com/jgallen23/dice-roll",
   "license": "MIT",
   "copyright": "Greg Allen",
