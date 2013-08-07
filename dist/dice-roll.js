@@ -1,17 +1,10 @@
 /*!
-  * Dice Roll - A javascript A/B library 
-  * v0.0.4
-  * https://github.com/jgallen23/dice-roll
-  * copyright JGA 2011
-  * MIT License
-  */
-
-!function (name, definition) {
-  if (typeof module != 'undefined' && module.exports) module.exports = definition();
-  else if (typeof define == 'function' && typeof define.amd == 'object') define(definition);
-  else this[name] = definition();
-}('diceRoll', function() {
-
+ * dice-roll - A basic A/B test library
+ * v0.0.4
+ * https://github.com/jgallen23/dice-roll
+ * copyright Greg Allen 2013
+ * MIT License
+*/
 var max = 1000;
 //monster should be loaded only in browser.
 var monster = (typeof module !== 'undefined')?false:(typeof ender !== "undefined")?require("cookie-monster"):window.monster;
@@ -78,6 +71,3 @@ DiceRoll.prototype.run = function() {
 var diceRoll = function(name, expires) {
   return new DiceRoll(name, expires);
 };
-
-  return diceRoll;
-});

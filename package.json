@@ -1,20 +1,19 @@
 {
   "name": "dice-roll",
-  "description": "A basic A/B test library",
-  "version": "0.0.4",
-  "homepage": "https://github.com/jgallen23/dice-roll",
-  "author": "Greg Allen <@jgaui> (http://jga.me)",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jgallen23/dice-roll.git"
-  },
-  "dependencies": {
-    "cookie-monster": "*"
-  },
+  "version": "0.0.0",
+  "private": true,
   "devDependencies": {
-    "mocha": "*",
-    "chai": "*"
-  },
-  "main": "./dist/dice-roll.js",
-  "keywords": ["ender", "testing", "ab"]
+    "grunt": "~0.4.1",
+    "grunt-mocha": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-connect": "~0.3.0",
+    "grunt-contrib-watch": "~0.5.1",
+    "grunt-plato": "~0.2.0",
+    "grunt-bytesize": "~0.1.0",
+    "grunt-concat-bower": "~0.1.0",
+    "grunt-shell": "~0.3.0",
+    "grunt-contrib-clean": "~0.5.0"
+  }
 }
