@@ -10,6 +10,10 @@ suite('diceRoll', function() {
 
   suite('#init', function() {
 
+    test('add diceRoll to window', function() {
+      assert.equal(typeof window.diceRoll, 'function');
+    });
+
     test('should take name and expires', function() {
       var dr = diceRoll('name', 10);
       assert.equal(dr.key, 'diceroll-name');
