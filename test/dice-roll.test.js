@@ -1,123 +1,118 @@
+import CookieMonster from '@firstandthird/cookie-monster';
+import test from 'tape-rollup';
+import diceRoll from '../index';
 
-suite('diceRoll', function() {
+const teardown = () => {
+  CookieMonster.remove('diceroll-name');
+};
 
-  teardown(function(done) {
-    if (typeof monster !== "undefined") {
-      monster.remove('diceroll-name');
+test('add diceRoll to window', assert => {
+  assert.equal(typeof diceRoll, 'function');
+  assert.end();
+});
+
+test('should take name and expires', assert => {
+  const dr = diceRoll('name', 10);
+  assert.equal(dr.key, 'diceroll-name');
+  assert.equal(dr.expires, 10);
+  assert.end();
+});
+
+test('should default to 7 day expires', assert => {
+  const dr = diceRoll('name');
+  assert.equal(dr.expires, 7);
+  assert.end();
+});
+
+test('should add to tests', assert => {
+  const f = () => {};
+  const dr = diceRoll('name').test(10, f);
+  assert.equal(dr.tests.length, 1);
+  assert.equal(dr.tests[0].percentage, 10);
+  assert.equal(dr.tests[0].callback, f);
+  assert.end();
+});
+
+test('should set the elseCallback', assert => {
+  const f = () => {};
+  const dr = diceRoll('name').otherwise(f);
+  assert.equal(dr.elseCallback, f);
+  assert.end();
+});
+
+test('should call test if 100%', assert => {
+  diceRoll('name')
+    .test(100, (perc, testNum) => {
+      assert.equal(perc, 100);
+      assert.equal(testNum, 0);
+      assert.end();
+    })
+    .run();
+  teardown();
+});
+
+test('should allow for multiple tests', assert => {
+  diceRoll('name')
+    .test(50, () => {
+      assert.pass('pass');
+      assert.end();
+    })
+    .test(50, () => {
+      assert.pass('pass');
+      assert.end();
+    })
+    .run();
+  teardown();
+});
+
+test('should work if no tests are defined', assert => {
+  diceRoll('name')
+    .otherwise(() => {
+      assert.pass('pass');
+      assert.end();
+    })
+    .run();
+  teardown();
+});
+
+test('should call otherwise if no test passes', assert => {
+  diceRoll('name')
+    .test(0, () => {})
+    .otherwise((perc, testNum) => {
+      assert.equal(perc, false);
+      assert.equal(testNum, '1');
+      assert.end();
+    })
+    .run();
+  teardown();
+});
+
+test('should remember last result', assert => {
+  let firstRun = -1;
+  const f = (perc, testNum) => {
+    if (firstRun === -1) {
+      firstRun = testNum;
+      run(); //eslint-disable-line no-use-before-define
+    } else {
+      assert.equal(testNum, firstRun);
+      assert.end();
     }
-    done();
-  });
+  };
 
-  suite('#init', function() {
-
-    test('add diceRoll to window', function() {
-      assert.equal(typeof window.diceRoll, 'function');
-    });
-
-    test('should take name and expires', function() {
-      var dr = diceRoll('name', 10);
-      assert.equal(dr.key, 'diceroll-name');
-      assert.equal(dr.expires, 10);
-    });
-
-    test('should default to 7 day expires', function() {
-      var dr = diceRoll('name');
-      assert.equal(dr.expires, 7);
-    });
-  });
-
-  suite('#test', function() {
-
-    test('should add to tests', function() {
-      var f = function() {};
-      var dr = diceRoll('name').test(10, f);
-      assert.equal(dr.tests.length, 1);
-      assert.equal(dr.tests[0].percentage, 10);
-      assert.equal(dr.tests[0].callback, f);
-    });
-
-  });
-
-  suite('#otherwise', function() {
-    test('should set the elseCallback', function() {
-      var f = function() {};
-      var dr = diceRoll('name').otherwise(f);
-      assert.equal(dr.elseCallback, f);
-    });
-  });
-
-  suite('#run', function() {
-  
-   test('should call test if 100%', function(done) {
-     diceRoll('name')
-      .test(100, function(perc, testNum) {
-        assert.equal(perc, 100);
-        assert.equal(testNum, 0);
-        done();
-      })
+  function run() {
+    diceRoll('name')
+      .test(10, f)
+      .test(10, f)
+      .test(10, f)
+      .test(10, f)
+      .test(10, f)
+      .test(10, f)
+      .test(10, f)
+      .test(10, f)
+      .otherwise(f)
       .run();
-   }); 
-   
-   test('should allow for multiple tests', function(done) {
-     diceRoll('name')
-      .test(50, function() {
-        done();
-      })
-      .test(50, function() {
-        done();
-      })
-      .run();
-   });
+  }
 
-   it ('should work if no tests are defined', function(done) {
-     diceRoll('name')
-      .otherwise(function() {
-        done();
-      })
-      .run();
-   });
-   test('should call otherwise if no test passes', function(done) {
-     diceRoll('name')
-      .test(0, function() {
-      })
-      .otherwise(function(perc, testNum) {
-        assert.equal(perc, false);
-        assert.equal(testNum, 1);
-        done();
-      })
-      .run();
-   });
-
-   if (typeof monster !== "undefined") {
-     suite('cookies enabled', function() {
-       test('should remember last result', function(done) {
-         var firstRun = -1;
-
-         var f = function(perc, testNum) {
-           if (firstRun == -1) {
-             firstRun = testNum;
-             run(); //run again
-           } else {
-             assert.equal(testNum, firstRun);
-             done();
-           }
-         };
-         var run = function() {
-           diceRoll('name')
-            .test(10, f) 
-            .test(10, f)
-            .test(10, f)
-            .test(10, f)
-            .test(10, f)
-            .test(10, f)
-            .test(10, f)
-            .test(10, f)
-            .otherwise(f)
-            .run();
-         };
-         run();
-       });
-     });
-   }
-  });
+  run();
+  teardown();
 });

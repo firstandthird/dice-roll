@@ -1,19 +1,59 @@
 {
   "name": "dice-roll",
-  "version": "0.0.0",
-  "private": true,
+  "version": "1.0.0",
+  "description": "A JavaScript A/B test library",
+  "main": "dist/dice-roll.js",
+  "module": "index.js",
+  "keywords": [
+    "dice-roll",
+    "conversion"
+  ],
+  "scripts": {
+    "start": "scriptkit",
+    "build": "scriptkit build",
+    "dev": "scriptkit dev",
+    "test": "cat test/dice-roll.test.dist.js | tape-run --static . --browser phantomjs --render tap-spec",
+    "prepublish": "scriptkit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/firstandthird/dice-roll.git"
+  },
+  "author": "First+Third",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/firstandthird/dice-roll/issues"
+  },
+  "homepage": "https://github.com/firstandthird/dice-roll#readme",
   "devDependencies": {
-    "grunt": "~0.4.1",
-    "grunt-mocha": "~0.4.1",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt-contrib-uglify": "~0.2.0",
-    "grunt-contrib-jshint": "~0.6.0",
-    "grunt-contrib-connect": "~0.3.0",
-    "grunt-contrib-watch": "~0.5.1",
-    "grunt-plato": "~0.2.0",
-    "grunt-bytesize": "~0.1.0",
-    "grunt-concat-bower": "~0.2.0",
-    "grunt-shell": "~0.3.0",
-    "grunt-contrib-clean": "~0.5.0"
+    "eslint-config-firstandthird": "3.2.0",
+    "eslint-plugin-import": "2.2.0",
+    "phantomjs-prebuilt": "2.1.14",
+    "scriptkit": "0.2.0",
+    "tap-spec": "4.1.1",
+    "tape-rollup": "4.6.4",
+    "tape-run": "3.0.0"
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true
+    },
+    "extends": "firstandthird"
+  },
+  "scriptkit": {
+    "files": {
+      "dist/dice-roll.js": "index.js",
+      "test/dice-roll.test.dist.js": "test/dice-roll.test.js"
+    },
+    "scripts": {
+      "babel": {
+        "exclude": [
+          "node_modules/tape-rollup/*"
+        ]
+      }
+    }
+  },
+  "dependencies": {
+    "@firstandthird/cookie-monster": "^2.0.0"
   }
 }
