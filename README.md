@@ -1,16 +1,11 @@
-#Dice Roll
-A simple a/b test library for javascript
+# Dice Roll
+A simple A/B test library for JavaScript
 
 ## Features
 
 - Pass in any percentage to test
-- Will cookie user so they stay in the test when they come back (requires: [cookie-monster](https://github.com/jgallen23/cookie-monster))
+- Will cookie user so they stay in the test when they come back (requires: [cookie-monster](https://github.com/firstandthird/cookie-monster))
 - Get a callback that tells you whether the user is in the test or not
-
-## Installation
-
-download [dice-roll.js](https://github.com/jgallen23/dice-roll/blob/master/dist/dice-roll.js) from dist directory.
-(If you want the test to be persistance across visits, download [cookie-monster](https://github.com/jgallen23/cookie-monster) as well)
 
 ## Usage
 
