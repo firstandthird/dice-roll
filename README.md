@@ -1,4 +1,7 @@
 # Dice Roll
+
+![npm](https://img.shields.io/npm/v/dice-roll.svg)
+
 A simple A/B test library for JavaScript
 
 ## Features
@@ -9,22 +12,26 @@ A simple A/B test library for JavaScript
 
 ## Usage
 
-	diceRoll('testName', expiration) //jquery style chaining
-		.test(percentage, callback);
-		.test(percentage2, callback2);
-		.otherwise(callback3);
-		.run();
+```js
+  diceRoll('testName', expiration) //jquery style chaining
+    .test(percentage, callback);
+    .test(percentage2, callback2);
+    .otherwise(callback3);
+    .run();
+```
 
 ## Example
 
-	diceRoll('testName', 1) //cookied for 1 day
-		.test(10, function() {
-			//10% of the time user will be in this test
-		});
-		.test(20, function() {
-			//20% of the time user will be in this test 
-		});
-		.otherwise(function() {
-			//called if not in either other test (70% of the time)
-		});
-		.run();
+```js
+  diceRoll('testName', 1) //cookied for 1 day
+    .test(10, function() {
+      //10% of the time user will be in this test
+    });
+    .test(20, function() {
+      //20% of the time user will be in this test
+    });
+    .otherwise(function() {
+      //called if not in either other test (70% of the time)
+    });
+    .run();
+```
