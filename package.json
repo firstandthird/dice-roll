@@ -1,6 +1,6 @@
 {
   "name": "dice-roll",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "A JavaScript A/B test library",
   "main": "index.js",
   "module": "dist/dice-roll.js",
