@@ -1,5 +1,6 @@
 # Dice Roll
 
+[![Build Status](https://travis-ci.org/firstandthird/dice-roll.svg?branch=master)](https://travis-ci.org/firstandthird/dice-roll)
 ![npm](https://img.shields.io/npm/v/dice-roll.svg)
 
 A simple A/B test library for JavaScript
@@ -9,6 +10,12 @@ A simple A/B test library for JavaScript
 - Pass in any percentage to test
 - Will cookie user so they stay in the test when they come back (requires: [cookie-monster](https://github.com/firstandthird/cookie-monster))
 - Get a callback that tells you whether the user is in the test or not
+
+## Installation
+
+```sh
+npm install dice-roll
+```
 
 ## Usage
 
